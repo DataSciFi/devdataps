@@ -1,0 +1,60 @@
+---
+title       : Miles Per Gallon - Interactive Exploration Tool
+subtitle    : MtCars exploration
+author      : DataSciFi
+job         : 
+framework   : io2012        # {io2012, html5slides, shower, dzslides, ...}
+highlighter : highlight.js  # {highlight.js, prettify, highlight}
+hitheme     : tomorrow      # 
+widgets     : []            # {mathjax, quiz, bootstrap}
+mode        : selfcontained # {standalone, draft}
+knit        : slidify::knit2slides
+---
+
+## Interactive MtCars Exploration Tool
+This tool can be used to visually explore different pairwise combinations of continous and categorical predictors for "mtcars" dataset
+
+--- .class #id 
+
+## Select Continous Predictor
+Select one of the following continous predictors
+ * Displacement
+ * Gross horsepower
+ * Rear axle ratio
+ * Weight
+ * 1/4 mile time
+
+--- .class #id 
+
+## Select Categorical Predictor
+
+Select one of the following categorical predictors
+  * Number of cylinders
+  * Engine type (Straight or V-type)
+  * Transmission type
+  * Number of forward gears
+  * Number of carburetors
+
+--- .class #id 
+
+## View Changes in a Plot 
+
+Sample plot for Displacement and Number of cylinders
+```{r echo=FALSE}
+library(datasets)
+library(ggplot2)
+
+data(mtcars)
+mcars <- mtcars
+mcars$am <- factor(mtcars$am, levels=c(0,1), labels=c("Automatic","Manual"))
+mcars$cyl <- ordered(mtcars$cyl, levels=c(4,6,8), labels=c("4 Cylinder","6 Cylinder","8 Cylinder"))
+mcars$vs <- factor(mtcars$vs, levels=c(0,1), labels=c("V Engine","Straight Engine"))
+mcars$gear <- ordered(mtcars$gear, levels=c(3,4,5), labels=c("3 Gear","4 Gear","5 Gear"))
+mcars$carb <- ordered(mtcars$carb, levels=c(1,2,3,4,6,8))
+predictors <- names(mtcars)[!(names(mtcars) %in% c("mpg"))]
+ggplot(mcars, aes_string(x = "disp", y = "mpg", col="cyl")) + 
+        geom_point() + geom_smooth(method = "lm") + 
+        ylab("Miles Per Gallon") + xlab("Displacement (cubic inch)")
+```
+
+
